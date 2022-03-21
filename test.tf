@@ -68,12 +68,7 @@ data "aws_ami" "amazon_linux_ami" {
 
   filter {
     name   = "name"
-    values = ["amzn-ami-hvm-2018*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    values = ["ami-08c308b1bb265e927"]
   }
 }
 
