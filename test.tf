@@ -102,7 +102,7 @@ resource "aws_security_group" "codydeploy_sg" {
 
 resource "aws_instance" "deploy" {
   ami = data.aws_ami.amazon_linux_ami.id
-  instance_type = "t3.nano"
+  instance_type = "t3.micro"
   subnet_id = aws_subnet.my_subnet.id
   key_name                    = aws_key_pair.ssh_key_281.key_name
   associate_public_ip_address = true
