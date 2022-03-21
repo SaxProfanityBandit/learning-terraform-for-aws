@@ -61,17 +61,6 @@ data "template_file" "userdata" {
     aws_region       = "${data.aws_region.current.name}"
   }
 }
-
-data "aws_ami" "amazon_linux_ami" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["ami-08c308b1bb265e927"]
-  }
-}
-
 resource "aws_security_group" "codydeploy_sg" {
   name   = "codydeploy_sg"
   vpc_id = aws_vpc.my_vpc.id
@@ -96,7 +85,7 @@ resource "aws_security_group" "codydeploy_sg" {
 }
 
 resource "aws_instance" "deploy" {
-  ami = data.aws_ami.amazon_linux_ami.id
+  ami = "ami-08c308b1bb265e927"
   instance_type = "t3.micro"
   subnet_id = aws_subnet.my_subnet.id
   key_name                    = aws_key_pair.ssh_key_281.key_name
