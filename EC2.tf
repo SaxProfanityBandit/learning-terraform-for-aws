@@ -84,8 +84,8 @@ resource "aws_security_group" "codydeploy_sg" {
   }
 }
 
-resource "aws_iam_role" "example" {
-  name = "example-role"
+resource "aws_iam_role" "codedeploy-role" {
+  name = "codedeploy-role"
 
   assume_role_policy = <<EOF
 {
@@ -106,7 +106,12 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
-  role       = aws_iam_role.example.name
+  role       = aws_iam_role.codedeploy-role.name
+}
+
+resource "aws_iam_role_policy_attachment" "AmazonS3ReadOnlyAccess" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+  role       = aws_iam_role.codedeploy-role.name
 }
 
 resource "aws_instance" "deploy" {
