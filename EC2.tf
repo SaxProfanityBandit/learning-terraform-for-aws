@@ -26,6 +26,14 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
+resource "aws_route_table" "public_route_table" {
+  vpc_id = "${aws_vpc.my_vpc.id}"
+
+  tags = {
+    Name = "CodeDeploy_Public_Route_Table"
+  }
+}
+
 resource "aws_route" "public_route" {
   route_table_id         = "${aws_route_table.public_route_table.id}"
   destination_cidr_block = "0.0.0.0/0"

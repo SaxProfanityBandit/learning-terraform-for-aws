@@ -8,6 +8,8 @@ echo "AllowTcpForwarding yes" >> /etc/ssh/sshd_config
 service sshd restart
 
 yum -y install curl iputils check-update gcc wget libcurl openssl unzip python3-distutils jq build-essential python36 python36-pip ruby
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
 pip install Flask
 
 while [ ! -f /home/ec2-user/.ssh/id_rsa ]
