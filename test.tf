@@ -26,26 +26,15 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-resource "aws_route_table" "public_route_table" {
-  vpc_id = "${aws_vpc.my_vpc.id}"
-
-  tags = {
-    Name = "CodeDeploy_Public_Route_Table"
-  }
+resource "aws_route" "public_route" {
+  route_table_id         = "${aws_route_table.public_route_table.id}"
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = "${aws_internet_gateway.gw.id}"
 }
 
-//route table
-resource "aws_route_table" "public_route_table" {
-  vpc_id = "${aws_vpc.my_vpc.id}"
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.gw.id}"
-  }
-
-  tags = {
-    Name = "CodeDeploy_Public_Route_Table"
-  }
+resource "aws_route_table_association" "public_route_table_association" {
+  subnet_id      = aws_subnet.my_subnet.id
+  route_table_id = "${aws_route_table.public_route_table.id}"
 }
 
 resource "aws_subnet" "my_subnet" {
@@ -85,6 +74,31 @@ resource "aws_security_group" "codydeploy_sg" {
   tags = {
     Name = "CodeDeploy_Security_Group"
   }
+}
+
+resource "aws_iam_role" "example" {
+  name = "example-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codedeploy.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+  role       = aws_iam_role.example.name
 }
 
 resource "aws_instance" "deploy" {
