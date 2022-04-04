@@ -19,7 +19,7 @@ resource "aws_vpc" "flask_vpc" {
 }
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = "${aws_vpc.my_vpc.id}"
+  vpc_id = "${aws_vpc.flask_vpc.id}"
 
   tags = {
     Name = "FlaskDev_IG"
@@ -27,7 +27,7 @@ resource "aws_internet_gateway" "gw" {
 }
 
 resource "aws_route_table" "public_route_table" {
-  vpc_id = "${aws_vpc.my_vpc.id}"
+  vpc_id = "${aws_vpc.flask_vpc.id}"
 
   tags = {
     Name = "FlaskDev_Public_Route_Table"
@@ -46,7 +46,7 @@ resource "aws_route_table_association" "public_route_table_association" {
 }
 
 resource "aws_subnet" "my_subnet" {
-  vpc_id            = aws_vpc.my_vpc.id
+  vpc_id            = aws_vpc.flask_vpc.id
   cidr_block        = "172.16.10.0/24"
   availability_zone = "eu-north-1a"
 
@@ -64,7 +64,7 @@ data "template_file" "userdata" {
 
 resource "aws_security_group" "flaskdev_sg" {
   name   = "FlaskDev_SG"
-  vpc_id = aws_vpc.my_vpc.id
+  vpc_id = aws_vpc.flask_vpc.id
 
   ingress {
     from_port   = 22
