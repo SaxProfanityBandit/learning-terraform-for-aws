@@ -1,0 +1,7 @@
+#!/bin/bash
+cd /home/ec2-user/flaskapp/
+source environment/bin/activate
+export FLASK_APP=learning-terraform-for-aws/index.py
+export FLASK_ENV=development
+
+flask run --host 0.0.0.0
