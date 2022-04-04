@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-
+#6663c1e1-a95c-42b9-afe0-b21971f62a35
 exec > >(tee /var/log/user-data.log|logger -t user-data ) 2>&1
 yum -y update
 
