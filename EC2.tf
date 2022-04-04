@@ -104,10 +104,11 @@ resource "aws_iam_role" "codedeploy-role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+resource "aws_iam_role_policy_attachment" "AmazonEC2RoleforAWSCodeDeploy" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforAWSCodeDeploy"
   role       = aws_iam_role.codedeploy-role.name
 }
+
 
 resource "aws_iam_role_policy_attachment" "AmazonS3ReadOnlyAccess" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"

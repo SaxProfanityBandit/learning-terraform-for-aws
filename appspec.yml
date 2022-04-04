@@ -1,0 +1,10 @@
+version: 0.1
+os: linux
+files:
+ - source: .
+   destination: /home/ec2-user/
+hooks:
+  ApplicationStart:
+   - location: /home/ec2-user/index.py
+     timeout: 300
+     runas: root
