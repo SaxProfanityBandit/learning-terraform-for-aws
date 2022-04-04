@@ -7,7 +7,7 @@ yum -y update
 echo "AllowTcpForwarding yes" >> /etc/ssh/sshd_config
 service sshd restart
 
-yum -y install curl iputils check-update gcc wget libcurl openssl unzip python3-distutils jq build-essential python36 python36-pip ruby
+yum -y install curl git iputils check-update gcc wget libcurl openssl unzip python3-distutils jq build-essential python36 python36-pip ruby
 curl -O https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py
 pip3 install Flask
@@ -25,3 +25,6 @@ wget https://aws-codedeploy-eu-north-1.s3.eu-north-1.amazonaws.com/latest/instal
 chmod +x ./install
 ./install auto
 service codedeploy-agent start
+
+git clone https://github.com/SaxProfanityBandit/learning-terraform-for-aws.git
+python3 index.py

@@ -56,7 +56,7 @@ resource "aws_codebuild_project" "flask_project" {
   name          = "flask_project"
   description   = "flask_project"
   build_timeout = "30"
-  service_role  = var.codebuild_iam_role_arn
+  service_role  = aws_iam_role.codedeploy-role.arn
 
   artifacts {
     type = "CODEPIPELINE"
@@ -80,10 +80,6 @@ resource "aws_codebuild_project" "flask_project" {
       stream_name = "log-stream"
     }
 
-    s3_logs {
-      status   = "ENABLED"
-      location = "${var.s3_logging_bucket_id}/${var.codebuild_project_terraform_plan_name}/build-log"
-    }
   }
 
   source {
@@ -98,14 +94,14 @@ resource "aws_codebuild_project" "flask_project" {
 
 resource "aws_codepipeline" "flask-pipeline" {
   name     = "flask-pipeline"
-  role_arn = aws_iam_role.codepipeline_role.arn
+  role_arn = aws_iam_role.codedeploy-role.arn
 
   artifact_store {
     location = aws_s3_bucket.flask-artifacts.bucket
     type     = "S3"
 
     encryption_key {
-      id   = data.aws_kms_alias.s3kmskey.arn
+      id   = CodeDeployKey
       type = "KMS"
     }
   }
