@@ -1,62 +1,9 @@
-provider "aws" {
-  region  = "eu-north-1"
-  profile = "default"
-}
-
-data "aws_region" "current" {}
-
-resource "aws_key_pair" "ssh_key_281" {
-  key_name   = "FlaskDev_Key"
-  public_key = "${file("~/.ssh/id_rsa.pub")}"
-}
-
-
-
 data "template_file" "userdata" {
   template = file("./userdata.sh")
   vars = {
     aws_region       = "${data.aws_region.current.name}"
   }
 }
-
-resource "aws_security_group" "flaskdev_sg" {
-  name   = "FlaskDev_SG"
-  vpc_id = aws_vpc.flask_vpc.id
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 5000
-    to_port     = 5000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 5000
-    to_port     = 5000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "FlaskDev_Security_Group"
-  }
-}
-
-
 
 resource "aws_instance" "deploy" {
   ami = "ami-08c308b1bb265e927"
